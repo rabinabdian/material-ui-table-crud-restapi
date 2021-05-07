@@ -121,7 +121,7 @@ function App() {
     }
 
     if(errorList.length < 1){ //no error
-      api.post("/users", newData)
+      api.post("/TodoManager/addTodo", newData)
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);
@@ -146,7 +146,7 @@ function App() {
 
   const handleRowDelete = (oldData, resolve) => {
     
-    api.delete("/users/"+oldData.id)
+    api.delete("/TodoManager/deleteTodo/"+oldData.id)
       .then(res => {
         const dataDelete = [...data];
         const index = oldData.tableData.id;
