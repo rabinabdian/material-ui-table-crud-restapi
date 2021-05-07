@@ -44,23 +44,18 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `https://reqres.in/api`
+  
+  baseURL: `http://localhost:8080`
 })
-
-
-function validateEmail(email){
-  const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
-  return re.test(String(email).toLowerCase());
-}
 
 function App() {
 
   var columns = [
     {title: "id", field: "id", hidden: true},
-    {title: "Avatar", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.first_name} />  },
-    {title: "First name", field: "first_name"},
-    {title: "Last name", field: "last_name"},
-    {title: "email", field: "email"}
+    {title: "Avatar", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.title} />  },
+    {title: "Title", field: "title"},
+    {title: "Description", field: "description"},
+
   ]
   const [data, setData] = useState([]); //table data
 
@@ -69,9 +64,9 @@ function App() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
-    api.get("/users")
+    api.get("/TodoManager/getAllTodos")
         .then(res => {               
-            setData(res.data.data)
+            setData(res.data)
          })
          .catch(error=>{
              console.log("Error")
@@ -81,18 +76,15 @@ function App() {
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
     let errorList = []
-    if(newData.first_name === ""){
-      errorList.push("Please enter first name")
+    if(newData.title === ""){
+      errorList.push("Please enter Tilte")
     }
-    if(newData.last_name === ""){
-      errorList.push("Please enter last name")
-    }
-    if(newData.email === "" || validateEmail(newData.email) === false){
-      errorList.push("Please enter a valid email")
+    if(newData.description === ""){
+      errorList.push("Please enter Description")
     }
 
     if(errorList.length < 1){
-      api.patch("/users/"+newData.id, newData)
+      api.put("/TodoManager/updateTodo/"+newData.id, newData)
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -120,14 +112,11 @@ function App() {
   const handleRowAdd = (newData, resolve) => {
     //validation
     let errorList = []
-    if(newData.first_name === undefined){
-      errorList.push("Please enter first name")
+    if(newData.title === undefined){
+      errorList.push("Please enter Tilte")
     }
-    if(newData.last_name === undefined){
-      errorList.push("Please enter last name")
-    }
-    if(newData.email === undefined || validateEmail(newData.email) === false){
-      errorList.push("Please enter a valid email")
+    if(newData.description === undefined){
+      errorList.push("Please enter Description")
     }
 
     if(errorList.length < 1){ //no error
@@ -170,7 +159,6 @@ function App() {
         resolve()
       })
   }
-
 
   return (
     <div className="App">
