@@ -52,7 +52,8 @@ function App() {
 
   var columns = [
     {title: "id", field: "id", hidden: true},
-    {title: "Priority", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.priorityTodo} />  },
+    {title: "Icon", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.priorityTodo} />  },
+    {title: "Priority", field: "priorityTodo"},
     {title: "Title", field: "title"},
     {title: "Description", field: "description"},
 
