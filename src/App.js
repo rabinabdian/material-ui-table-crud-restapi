@@ -52,7 +52,7 @@ function App() {
 
   var columns = [
     {title: "id", field: "id", hidden: true},
-    {title: "Avatar", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.title} />  },
+    {title: "Priority", render: rowData => <Avatar maxInitials={1} size={40} round={true} name={rowData === undefined ? " " : rowData.priorityTodo} />  },
     {title: "Title", field: "title"},
     {title: "Description", field: "description"},
 
@@ -176,7 +176,7 @@ function App() {
             }       
           </div>
             <MaterialTable
-              title="User data from remote source"
+              title="Todo List "
               columns={columns}
               data={data}
               icons={tableIcons}
